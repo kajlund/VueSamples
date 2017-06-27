@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Lists</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <h2>Range of numbers</h2>
+            <p>Loop through simple range of numbers.</p>
+            <ul>
+                <li v-for="n in 4">Hello!</li>
+            </ul>
+
+            <h2>Countdown list</h2>
+            <p>Countdown from 10.</p>
+            <ul>
+                <li v-for="n in 10">{{11-n}}</li>
+                <li>Launch!</li>
+            </ul>
+
+            <h2>Data Arrays</h2>
+            <p>Looping through data array</p>
+            <ul>
+                <li v-for="n in arr">{{n}}</li>
+                <li>Launch!</li>
+            </ul>
+
+            <h2>Arrays with index notation</h2>
+            <p>Loop data array and use loop position.</p>
+            <ul>
+                <li v-for="(animal, i) in animals">
+                    The {{animal}} goes {{sounds[i]}}
+                </li>
+            </ul>
+
+            <h2>Loop through Object properties</h2>
+            <p><code>v-for="(value, property, index)"</code></p>
+            <ul>
+                <li v-for="(sound, name) in animalsObj">
+                    The {{name}} goes {{sound}}
+                </li>
+            </ul>
+
+            <h2>Dynamic Countdown</h2>
+            <p>Dynamic, animated countdown.</p>
+            <ul>
+                <li v-for="n in countdown">{{n}}</li>
+                <li v-if="countdown.length === 10">Launch</li>
+                <li v-else>...</li>
+            </ul>
+        </div>
+    </body>
+    <script>
+        var counter = 10,
+            vm = new Vue({
+	            el: '#app',
+                data: {
+                    arr: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+                    animals: ['dog', 'cat', 'bird'],
+                    sounds: ['woof', 'meow', 'tweet'],
+                    animalsObj: {
+                        dog: 'woof',
+                        cat: 'meow',
+                        bird: 'tweet'
+                    },
+                    countdown: []
+                }
+            });
+
+        setInterval(function () {
+            if (counter > 0) {
+                vm.countdown.push(counter--);
+            }
+        }, 1000);
+    </script>
+</html>

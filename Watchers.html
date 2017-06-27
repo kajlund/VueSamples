@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <h1>Watchers</h1>
+            <p>In addition to computed properties Vue support watchers.
+                For more info see the <a href="https://vuejs.org/v2/guide/computed.html">Vue guide</a>.
+            </p>
+
+            <p>In the console you can see the result function always getting called (also when increasing secondCounter variable)1 whereas the computed output function only gets called when needed i.e. when changing the value of counter.</p>
+
+            <button @click="counter++" class="btn btn-success">Inc</button>
+            <button @click="counter--" class="btn btn-warning">Dec</button>
+            <button @click="secondCounter++" class="btn btn-primary">Inc Second</button>
+
+            <p>Counter: {{ counter }} | {{ secondCounter }}</p>
+            <p>Result: {{ result() }} | {{ output }}</p>
+        </div>
+    </body>
+    <script>
+        let surname = 'Snow';
+
+        new Vue({
+	        el: '#app',
+            data: {
+                counter: 0,
+                secondCounter: 0
+            },
+            computed: {
+                output: function () {
+                    console.log('Computed');
+                    return this.counter > 5 ? 'Greater than 5' : '5 or smaller';
+                }
+            },
+            methods: {
+                result: function () {
+                    console.log('Method');
+                    return this.counter > 5 ? 'Greater than 5' : '5 or smaller';
+                }
+            },
+            watch: {
+                counter: function (value) {
+                    // Use computer properties instead if possible
+                    // watches are good when u need to run async tasks
+                    var vm = this;
+
+                    setTimeout(function () {
+                        vm.counter = 0;
+                    }, 2000);
+                }
+            }
+        });
+    </script>
+</html>

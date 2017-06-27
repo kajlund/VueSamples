@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div class="container" id="app">
+            <p>Only firstname is inside Vue and is therefore "Reactive".
+                For more info see the <a href="https://vuejs.org/v2/guide/computed.html">Vue guide</a>.
+            </p>
+            <input type="text" v-model="name">
+            <input type="text" id="surname" value="Snow">
+            <button class="btn btn-default" @click="saveSurname">Save Surname</button>
+            <h3>{{computedFullName}}</h3>
+        </div>
+    </body>
+    <script>
+        let surname = 'Snow';
+
+        new Vue({
+	        el: '#app',
+            data: {
+                name: 'John'
+            },
+            computed: {
+                computedFullName () {
+                    return this.name + ' ' + surname;
+                }
+            },
+            methods: {
+                saveSurname () {
+                    console.log(this.$el.querySelector('#surname').value);
+                    surname = this.$el.querySelector('#surname').value
+                }
+            }
+        });
+    </script>
+</html>

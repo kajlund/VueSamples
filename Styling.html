@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>CSS</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <h1>CSS Styles</h1>
+
+            <div class="well"
+                @click="attachRed = !attachRed"
+                :class="divClasses">
+                <p>Toggle attachRed variable on click. Also the class attribute is dynamically bound to divClasses variable</p>
+            </div>
+
+            <div class="well gray" :class="{'red': attachRed}">
+                <p>class property set so that style red is applied when attachRed variable is true.
+                </p>
+            </div>
+
+            <div class="well gray" :class="color">
+                <p>
+                    Displays class from value in variable color that is bound to the input field. You can use array syntax to add more than one. :class="[color, {red: attachRed}]"
+                </p>
+            </div>
+            <hr>
+            <input type="text" v-model="color">
+            <input type="number" v-model="width">
+            <hr>
+
+            <div class="well grey" :style="{'background-color': color}">
+                <p>Binds style property attr background-color to color variable color.</p>
+            </div>
+
+            <div class="well grey" :style="myStyle">
+                <p>Using computed property style object based on color and width inputs.</p>
+            </div>
+
+            <div class="well grey" :style="[myStyle, {height: width + 'px'}]">
+                The above with array syntax adding computed height.
+            </div>
+        </div>
+
+        <script>
+            new Vue({
+                el: '#app',
+                data: {
+                    attachRed: false,
+                    color: 'gray',
+                    width: 100
+                },
+                computed: {
+                    divClasses: function () {
+                        // Replaces :class="{'red': attachRed, blue: !attachRed }"
+                        return {
+                            red: this.attachRed,
+                            blue: !this.attachRed
+                        }
+                    },
+                    myStyle: function () {
+                        return {
+                            backgroundColor: this.color,
+                            width: this.width + 'px'
+                        }
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

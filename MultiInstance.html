@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Multiple Instances</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div id="app1" class="app">
+            <h1>{{title}}</h1>
+        </div>
+
+        <div id="app2" class="app">
+            <h1>{{title}}</h1>
+            <button @click="onChangeVM1" ref="myButton">Change in vm1</button>
+        </div>
+
+        <script>
+            var vm1 = new Vue({
+                el: '#app1',
+                data: { title: 'App #1' }
+            });
+
+            setTimeout(function () {
+                vm1.title = 'Changed by timer';
+            }, 3000);
+
+            var vm2 = new Vue({
+                el: '#app2',
+                data: { title: 'App #2' },
+                methods: {
+                    onChangeVM1: function (){
+                        vm1.title = 'Changed!';
+                        console.log(this.$refs);
+                        this.$refs.myButton.innerText = 'Test';
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div class="container" id="app">
+            <p>Filtering a list.
+                For more info see the <a href="https://vuejs.org/v2/guide/list.html#Displaying-Filtered-Sorted-Results">Vue guide</a>.
+            </p>
+            <div id="exp-exp">
+                <h3>List of expensive experiments</h3>
+                <ul>
+                    <li v-for="exp in filteredExperiments">
+                        {{exp.name}} ({{exp.cost}}m €)
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+    <script>
+        new Vue({
+	        el: '#app',
+            data: {
+                experiments: [
+                {name: 'RHIC Ion Collider', cost: 650, field: 'Physics'},
+                {name: 'Neptune Undersea Observatory', cost: 100, field: 'Biology'},
+                {name: 'Violinist in the Metro', cost: 3, field: 'Psychology'},
+                {name: 'Large Hadron Collider', cost: 7700, field: 'Physics'},
+                {name: 'DIY Particle Detector', cost: 0, field: 'Physics'}
+                ]
+            },
+            computed: {
+                filteredExperiments () {
+                    return this.lowCost(this.nonPhysics(this.experiments))
+                }
+            },
+            methods: {
+                nonPhysics (list) {
+                    return list.filter(exp => exp.field !== 'Physics')
+                },
+                lowCost (list) {
+                    return list.filter(exp => exp.cost <= 3)
+                }
+            }
+        });
+    </script>
+</html>

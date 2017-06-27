@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Events</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div id="app" class="container">
+            <h1>Handling Events</h1>
+
+            <div class="well green">
+                <h4>Counter now at {{counter}}!</h4>
+
+                <p>Click button to add another couple.</p>
+
+                <button v-on:click="add(2, $event)" class="btn btn-secondary">
+                Add 2
+                </button>
+            </div>
+
+            <div v-on:mousemove="updateCoords" class="well red">
+                <h4>Mousemove and modifier</h4>
+
+                <p>Catching mousemoves. Coordinates: {{ x }} / {{ y }}
+                    <span v-on:mousemove.stop="">[DEAD SPOT]</span>
+                </p>
+            </div>
+
+            <div class="well green">
+                <h4>Key Modifiers</h4>
+                <label for="txtAlert">Alert on Enter and Space</label>
+                <input type="text" v-on:keyup.enter.space="alertMe"
+                       name="txtAlert" class="form-control">
+            </div>
+        </div>
+    </body>
+    <script>
+        new Vue({
+	        el: '#app',
+            data: {
+                counter: 0,
+                x: 0,
+                y: 0
+            },
+            methods: {
+                add: function (step, event) {
+                    this.counter += step;
+                },
+
+                alertMe: function () {
+                    alert('Alert!');
+                },
+
+                updateCoords: function (event) {
+                    this.x = event.clientX;
+                    this.y = event.clientY;
+                }
+            }
+        });
+    </script>
+</html>

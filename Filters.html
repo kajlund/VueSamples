@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Filters</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="lib/accounting.min.js"></script>
+        <script src="lib/vue.js"></script>
+        <style>
+            .price {
+                text-align: right;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container" id="app">
+            <h2>{{'hello world' | capitalize}}</h2>
+            <h2>Balance is {{amount|currency}}</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in inventory">
+                        <td>{{item.name}}</td>
+                        <td class="price">{{item.price|dollars}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+    <script>
+        Vue.filter('capitalize', function (string) {
+            var capitalFirst = string.charAt(0).toUpperCase()
+            var noCaseTail = string.slice(1, string.length)
+            return capitalFirst + noCaseTail
+        });
+
+        Vue.filter('currency', function (money) {
+            return accounting.formatMoney(money);
+        });
+
+        Vue.filter('dollars', function (money) {
+            return accounting.formatMoney(money);
+        });
+
+        new Vue({
+	        el: '#app',
+            data: {
+                amount: 5.987654,
+                inventory: [
+                    {name: 'Tape measure', price: '7'},
+                    {name: 'Stamp', price: '0.01'},
+                    {name: 'Shark tooth', price: '1.5'},
+                    {name: 'iPhone', price: '999'}
+                ]
+            }
+        });
+    </script>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Router</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+        <script src="lib/vue-router.js"></script>
+        <style>
+            .home {
+                border-left: 3px solid red;
+                padding: 1rem;
+            }
+            .menu {
+                border-left: 3px solid green;
+                padding: 1rem;
+            }
+            .bar {
+                border-left: 3px solid blue;
+                padding: 1rem;
+            }
+
+            a.router-link-active {
+                background-color: gainsboro;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <h1>Choppy's Restaurant</h1>
+
+            <p>[&nbsp;
+                <router-link to="/" exact>Home</router-link> |
+                <router-link to="/menu">Menu</router-link> |
+                <router-link tag="a" to="/bar"
+                        :event="['mousedown', 'touchstart']">
+                    Bar
+                </router-link>
+            &nbsp;]</p>
+            <router-view></router-view>
+        </div>
+
+        <script>
+        Vue.use(VueRouter);
+
+        const Home = {
+            template: `<div class="home">Welcome to Choppy's</div>`
+        };
+
+        const Menu = {
+            template: `<div class="menu">Today we have cookies</div>`
+        };
+
+        const Bar = {
+            template: `<div class="bar">We serve cocktails</div>`
+        };
+
+        const router = new VueRouter({
+            routes: [
+                { path: '/', component: Home },
+                { path: '/menu', component: Menu },
+                { path: '/bar', component: Bar },
+            ]
+        })
+
+        new Vue({
+            router,
+	        el: '#app'
+        });
+        </script>
+    </body>
+</html>

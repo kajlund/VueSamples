@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sorted List</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="lib/vue.js"></script>
+        <style type="text/css">
+            .ascending:after {
+                content: "\25B2"
+            }
+
+            .descending:after {
+            content: "\25BC"
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container" id="app">
+            <p>Sorting a list using a computed property.
+                For more info see the <a href="https://vuejs.org/v2/guide/list.html#Displaying-Filtered-Sorted-Results">Vue guide</a>.
+            </p>
+            <div id="exp-exp">
+                <h3>List of expensive experiments</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th>Name</th>
+                        <th>Country</th>
+                        <th :class="order === 1 ? 'descending' : 'ascending'"
+                            @click="sort">Electricity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="dam in damsByElectricity">
+                        <td>{{dam.name}}</td>
+                        <td>{{dam.country}}</td>
+                        <td>{{dam.electricity}} MegaWatts</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+    <script>
+        new Vue({
+	        el: '#app',
+            data: {
+                dams: [
+                    {name: 'Nurek Dam', country: 'Tajikistan', electricity: 3200},
+                    {name: 'Three Gorges Dam', country: 'China', electricity: 22500},
+                    {name: 'Tarbela Dam', country: 'Pakistan', electricity: 3500},
+                    {name: 'Guri Dam', country: 'Venezuela', electricity: 10200}
+                ],
+                order: 1
+            },
+            computed: {
+                damsByElectricity () {
+    	            return this.dams.sort((d1, d2) =>
+      	                (d2.electricity - d1.electricity) * this.order);
+  	            }
+            },
+            methods: {
+                sort () {
+    	            this.order = this.order * -1
+                }
+            }
+        });
+    </script>
+</html>
