@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Components - Render</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <my-lightbulb></my-lightbulb>
+            <my-lightbulb></my-lightbulb>
+            <my-lightbulb></my-lightbulb>
+        </div>
+
+        <script>
+        Vue.component('my-lightbulb', {
+            functional: true,
+            render (createElement) {
+                return createElement('div',
+                    { class: 'well'},
+                    [createElement('p', 'Eureka!')]
+                )
+            }
+        });
+
+        new Vue({
+	        el: '#app'
+        });
+        </script>
+    </body>
+</html>
