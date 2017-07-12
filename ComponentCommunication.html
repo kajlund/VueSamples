@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Component Communication</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <p>Communication between components can be achieved by having component instances read and write values to an external variable declared before the component. This is not considered good practice though.<p>
+            <p>Below we communicate by sending/receiving messages via a separate Vue instance.</p>
+            <p>an even better solution is to share state throughout your app using Vuex store.</p>
+            <blabber :ice-breaker="true"></blabber>
+            <blabber></blabber>
+        </div>
+
+        <script>
+        var bus = new Vue();
+        Vue.component('blabber', {
+            template: "<p>{{dialogue[currentLine]}}</p>",
+            props: {
+                iceBreaker: {
+                    type: Boolean,
+                    default: false
+                }
+            },
+            data () {
+                return {
+                    currentLine: this.iceBreaker ? 0 : -1,
+                    dialogue: [
+                        "Hello",
+                        "How are you?",
+                        "Fine, thanks!",
+                        "Let's go drink!",
+                        "Alriht, where?",
+                        "To hello's bar",
+                        "Hello?"
+                    ]
+                };
+            },
+            created () {
+                bus.$on('line', line => {
+                    if (line !== this.currentLine) {
+                        setTimeout(() => {
+                            this.currentLine = line + 1 % this.dialogue.length;
+                            bus.$emit('line', this.currentLine);
+                        }, 2000);
+                    }
+                })
+            },
+            mounted () {
+                if (this.iceBreaker) {
+                    bus.$emit('line', 0);
+                }
+            }
+        });
+
+        new Vue({
+	        el: '#app'
+        });
+        </script>
+    </body>
+</html>
