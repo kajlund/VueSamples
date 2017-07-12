@@ -9,13 +9,15 @@
     </head>
     <body>
         <div id="app">
+            <p>A component's data property needs to be a function returning an object. Using an object, the values would be shared among instances of the component.</p>
+            <p>Since JavaScript is case sensitive and HTML is case insensitive Vue translates Javascript camelcase notation to HTML kebab-case notation: myCmp -> my-cmp.</p>
             <my-cmp></my-cmp>
             <br>
             <my-cmp></my-cmp>
         </div>
 
         <script>
-        Vue.component('my-cmp', {
+        Vue.component('myCmp', {
             data: function () {
                 return {
                     critical: true
