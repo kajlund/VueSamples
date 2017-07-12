@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Component Props</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <p>Props are one-way communication from parent to component. They can be <em>fixed</em> or <em>dynamic</em>.
+            <p>Assigning fixed props (without the :) initially assignes the value but won't change it when the parent data property changes.</p>
+            <p>Available property types are
+                <strong>String</strong>, <strong>Number</strong>, <strong>Boolean</strong>, <strong>Function</strong>, <strong>Object</strong> and <strong>Array</strong>.
+            </p>
+            <p>Specifying default values for props of type Object or Array you need to use a function</p>
+            <p><pre>
+            default () {
+                return {name: "LuKa"};
+            }
+            </pre>
+            </p>
+            <label>Sound level</label>
+            <input type="number" v-model.number="soundLevel" value="">
+            <sound-icon :level="soundLevel"></sound-icon>
+        </div>
+
+        <script>
+        Vue.component('sound-icon', {
+            data () {
+                return {
+                    soundEmojis: ['🔇', '🔈', '🔉', '🔊']
+                };
+            },
+            props: {
+                level: {
+                    default: 0,
+                    required: true,
+                    type: Number,
+                    validator (value) {
+                        return value >= 0 && value <= 3
+                    }
+                }
+            },
+            template: "<span>{{soundEmojis[level]}}</span>"
+        });
+
+        new Vue({
+	        el: '#app',
+            data: {
+                soundLevel: 0
+            }
+        });
+        </script>
+    </body>
+</html>
