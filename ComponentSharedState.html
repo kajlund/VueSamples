@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Shared state with Vuex</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+        <script src="lib/vuex.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <p>Components "registers" with store on creation using a unique id. The template displays the current line, a computed property whose value is fetched from the store.<p>
+            <p>every two seconds a mutation to the store is issued via the main Vue instance by calling store.nextLine().</p>
+            <p>You can inspect mutation via Vue devtools.</p>
+            <blabber></blabber>
+            <blabber></blabber>
+        </div>
+
+        <script>
+        const store = new Vuex.Store({
+            strict: true,
+            state: {
+                currentActor: -1,
+                currentLine: -1,
+                actors: [],
+                dialogue: [
+                    "where are you going?",
+                    "To the cinema",
+                    "What's on at the cinema?",
+                    "'Quo vadis'",
+                    "Oh, what does it mean?"
+                ]
+            },
+            mutations: {
+                enterScene (state, uuid) {
+                    state.currentLine = (state.currentLine + 1) % state.dialogue.length;
+                    state.actors.push({
+                        uuid,
+                        line: state.dialogue[state.currentLine]
+                    });
+                    state.currentActor = (state.currentActor + 1) % state.actors.length;
+                },
+                nextLine (state) {
+                    state.currentActor = (state.currentActor + 1) % state.actors.length;
+                    state.currentLine = (state.currentLine + 1) % state.dialogue.length;
+                    state.actors[state.currentActor].line = state.dialogue[state.currentLine];
+                }
+            }
+        });
+        Vue.component('blabber', {
+            template: '<div class="well">{{currentLine}}</div>',
+            data () {
+                return {
+                    uuid: Math.random(),
+                };
+            },
+            computed: {
+                currentLine () {
+                    return store.state.actors.find(actor => actor.uuid === this.uuid).line;
+                }
+            },
+            created () {
+                store.commit('enterScene', this.uuid);
+            }
+        });
+
+        new Vue({
+	        el: '#app',
+            mounted () {
+                setInterval(() => {
+                    store.commit('nextLine');
+                }, 2000);
+            }
+        });
+        </script>
+    </body>
+</html>
