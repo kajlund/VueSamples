@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Dynamic Routes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+        <script src="lib/vue-router.js"></script>
+        <style>
+            .home {
+                border-left: 3px solid red;
+                padding: 1rem;
+            }
+            .menu {
+                border-left: 3px solid green;
+                padding: 1rem;
+            }
+            .bar {
+                border-left: 3px solid blue;
+                padding: 1rem;
+            }
+
+            a.router-link-active {
+                background-color: gainsboro;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <p>A generic route takes one or more params as denoted by <code>:id here</code>. You can then access the param via <code>$route.params.id</code>.</p>
+            <p>In this sample the routes are also named which enables us to declare an object specifying params for the <code>:to</code> property.</p>
+            <h1>Online Restaurant</h1>
+            <p>[&nbsp;
+                <router-link to="/" exact>Home</router-link> |
+                <span v-for="i in 10">
+                    <router-link  tag="a" :to="{ name: 'menu', params: { id: i}}">
+                        Menu {{i}}
+                    </router-link>
+                    <span v-if="i < 10">&nbsp;|</span>
+                </span>
+            &nbsp;]</p>
+            <router-view class="view"></router-view>
+        </div>
+
+        <script>
+        Vue.use(VueRouter);
+
+        const Home = {
+            template: `<div class="home">Welcome to Online Restaurant</div>`
+        };
+
+        const Menu = {
+            template: `
+            <div>
+              <p>You just ordered</p>
+              <img :src="'http://lorempixel.com/200/200/food/' + $route.params.id">
+            </div>`
+        };
+
+        const router = new VueRouter({
+            routes: [
+                { path: "/", name: "home", component: Home },
+                { path: "/menu/:id", name: "menu", component: Menu }
+            ]
+        })
+
+        new Vue({
+            router,
+	        el: '#app'
+        });
+        </script>
+    </body>
+</html>
