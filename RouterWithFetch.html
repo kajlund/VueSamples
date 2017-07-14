@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Router with Fetch</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="lib/vue.js"></script>
+        <script src="lib/vue-router.js"></script>
+        <script src="lib/axios.min.js"></script>
+        <style>
+            .home {
+                border: 1px solid rgba(0,0,0,.125);
+                border-left: 3px solid red;
+                padding: 1rem;
+            }
+            .about {
+                border: 1px solid rgba(0,0,0,.125);
+                border-left: 3px solid green;
+                padding: 1rem;
+            }
+            a.router-link-active {
+                background-color: gainsboro;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <p>The <em>beforeRouteEnter</em> method handles fetching of data. We call the next method when OK to change route or call it with param false to not allow the transition.</p>
+            <p>Since the component we want to transition to has not yet been created, the next function receives a reference to it as a parameter. You assign any data properties on the component via this reference.</p>
+            <h1>My Portfolio</h1>
+            <ul>
+                <li><router-link to="/" exact>Home</router-link></li>
+                <li><router-link to="/about">About</router-link></li>
+            </ul>
+            <router-view></router-view>
+        </div>
+
+        <script>
+        Vue.use(VueRouter);
+
+        const Home = {
+            template: `<div class="home">This is Home</div>`
+        };
+
+        const About = {
+            template: `<div class="about">Name: {{name}}<br>Phone: {{phone}}</div>`,
+            data () {
+                return {
+                    name: undefined,
+                    phone: undefined
+                };
+            },
+            beforeRouteEnter (to, from, next) {
+                axios.post("https://schematic-ipsum.herokuapp.com/", {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            type: "string",
+                            "ipsum": "name"
+                        },
+                        "phone": {
+                            "type": "string",
+                            "format": "phone"
+                        }
+                    }
+                }).then(response => {
+                    next(vm => {
+                        vm.name = response.data.name,
+                        vm.phone = response.data.phone
+                    });
+                });
+            }
+        };
+
+        const router = new VueRouter({
+            routes: [
+                { path: '/', component: Home },
+                { path: '/about', component: About }
+            ]
+        })
+
+        new Vue({
+            router,
+	        el: '#app'
+        });
+        </script>
+    </body>
+</html>
